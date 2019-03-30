@@ -1,6 +1,7 @@
 #include "fatal.h"
 #include "args.h"
 #include "numbers.h"
+#include "validate.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,16 +25,10 @@ void usageStatement(const char *program) {
 }
 
 int main(int argc, char *argv[]) {
-	// validate arguments
-	// implementation
 	if (toInt(getIterationArg(argc, argv), &iter) == EXIT_FAILURE)
 		usageStatement(argv[0]);
-
-	// Parsing the arguments passed to your C program
-	// Including the number of times that each thread increments
-	// the shared count cnt
-	// For example, NITER = 20000;
-
+	if (!isValid(iter))
+		usageStatement(argv[0]);
 
 	// Display the number of times (entered by the user) that each thread
 	// increments the shared count cnt
