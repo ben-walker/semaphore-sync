@@ -22,11 +22,21 @@ void usageStatement(const char *program) {
 	exit(EXIT_FAILURE);
 }
 
+void cleanUp() {
+    pthread_exit(NULL);
+    if (sem_destroy(&sema4) != 0)
+        fatal("sem_destroy");
+    free(&sema4);
+}
+
 int main(int argc, char *argv[]) {
 	if (toInt(getIterationArg(argc, argv), &iter) == EXIT_FAILURE)
 		usageStatement(argv[0]);
 	if (!isValid(iter))
 		usageStatement(argv[0]);
+
+    if (sem_init(&sema4, 0, 1) != 0)
+        fatal("sem_init");
 
 	// Display the number of times (entered by the user) that each thread
 	// increments the shared count cnt
@@ -55,6 +65,5 @@ int main(int argc, char *argv[]) {
 	else
 		printf("\nFAIL\n");
 	/* End of code section */
-
-	pthread_exit(NULL);
+    cleanUp();
 }
