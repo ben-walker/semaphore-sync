@@ -1,7 +1,7 @@
+#include "fatal.h"
 #include <pthread.h>
-#include <semaphore.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <semaphore.h>
 
 int NITER = 1000000;
 int cnt = 0;
@@ -36,26 +36,18 @@ int main(int argc, char *argv[]) {
 // End of code section 
 
 	// creating Thread 1
-	if (pthread_create(&tid1, NULL, Count, NULL)) {
-		printf("\n ERROR creating thread 1");
-		exit(1);
-	}
+	if (pthread_create(&tid1, NULL, Count, NULL))
+		fatal("\n ERROR creating thread 1");
 
 	// creating Thread 2
-	if (pthread_create(&tid2, NULL, Count, NULL)) {
-		printf("\n ERROR creating thread 2");
-		exit(1);
-	}
+	if (pthread_create(&tid2, NULL, Count, NULL))
+		fatal("\n ERROR creating thread 2");
 
-	if(pthread_join(tid1, NULL)) { // wait for the thread 1 to finish
-		printf("\n ERROR joining thread");
-		exit(1);
-	}
+	if(pthread_join(tid1, NULL)) // wait for the thread 1 to finish
+		fatal("\n ERROR joining thread");
 
-	if(pthread_join(tid2, NULL)) { // wait for the thread 2 to finish
-		printf("\n ERROR joining thread");
-		exit(1);
-	}
+	if(pthread_join(tid2, NULL)) // wait for the thread 2 to finish
+		fatal("\n ERROR joining thread");
 
    // Display the value of count cnt
 // PLEASE DO NOT remove or modify the following code
