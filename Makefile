@@ -1,4 +1,4 @@
-EXE = semaphore
+EXE = igoodcnt
 
 SRC_DIR = src
 OBJ_DIR = build
