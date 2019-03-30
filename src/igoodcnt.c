@@ -36,20 +36,17 @@ int main(int argc, char *argv[]) {
 	printf("2*NITER is [%d]\n", 2 * iter);
 	/* End of code section */
 
-	pthread_t tid1, tid2;
-
-	// creating Thread 1
-	if (pthread_create(&tid1, NULL, Count, NULL))
+	pthread_t thread1, thread2;
+	if (pthread_create(&thread1, NULL, Count, NULL)) // create thread 1
 		fatal("\n ERROR creating thread 1");
 
-	// creating Thread 2
-	if (pthread_create(&tid2, NULL, Count, NULL))
+	if (pthread_create(&thread2, NULL, Count, NULL)) // create thread 2
 		fatal("\n ERROR creating thread 2");
 
-	if(pthread_join(tid1, NULL)) // wait for the thread 1 to finish
+	if(pthread_join(thread1, NULL)) // wait for thread 1 to finish
 		fatal("\n ERROR joining thread");
 
-	if(pthread_join(tid2, NULL)) // wait for the thread 2 to finish
+	if(pthread_join(thread2, NULL)) // wait for thread 2 to finish
 		fatal("\n ERROR joining thread");
 
    // Display the value of count cnt
