@@ -1,14 +1,16 @@
 #include "fatal.h"
+#include "args.h"
+#include "numbers.h"
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <semaphore.h>
 
-int NITER = 1000000;
-int cnt = 0;
+int cnt = 0, iter;
 
 void *Count(void *a) {
    int tmp;
-   for (int i = 0; i < NITER; i += 1) {
+   for (int i = 0; i < iter; i += 1) {
       tmp = cnt; // copy the global cnt locally
       tmp += 1; // increment the local copy
       cnt = tmp; // store the local value into the global cnt
@@ -16,12 +18,16 @@ void *Count(void *a) {
    return NULL;
 }
 
-int main(int argc, char *argv[]) {
-   pthread_t tid1, tid2;
+void usageStatement(const char *program) {
+	fprintf(stderr, "usage: %s threadIncrementIndex\n", program);
+	exit(EXIT_FAILURE);
+}
 
+int main(int argc, char *argv[]) {
 	// validate arguments
 	// implementation
-
+	if (toInt(getIterationArg(argc, argv), &iter) == EXIT_FAILURE)
+		usageStatement(argv[0]);
 
 	// Parsing the arguments passed to your C program
 	// Including the number of times that each thread increments
@@ -31,9 +37,11 @@ int main(int argc, char *argv[]) {
 
 	// Display the number of times (entered by the user) that each thread
 	// increments the shared count cnt
-// PLEASE DO NOT remove or modify the following code 
-	printf("2*NITER is [%d]\n", 2*NITER);
-// End of code section 
+	/* PLEASE DO NOT remove or modify the following code */
+	printf("2*NITER is [%d]\n", 2 * iter);
+	/* End of code section */
+
+	pthread_t tid1, tid2;
 
 	// creating Thread 1
 	if (pthread_create(&tid1, NULL, Count, NULL))
@@ -50,13 +58,13 @@ int main(int argc, char *argv[]) {
 		fatal("\n ERROR joining thread");
 
    // Display the value of count cnt
-// PLEASE DO NOT remove or modify the following code
+	/* PLEASE DO NOT remove or modify the following code */
 	printf("\nCounter is [%d]\n", cnt);
-	if (cnt == 2 * NITER) 
+	if (cnt == 2 * iter) 
 		printf("\nPASS\n");
 	else
 		printf("\nFAIL\n");
-// End of code section
+	/* End of code section */
 
 	pthread_exit(NULL);
 }
