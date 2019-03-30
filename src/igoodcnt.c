@@ -10,11 +10,14 @@
 int cnt = 0, iter;
 sem_t sema4;
 
-void *Count(void *a) {
+void *count(void *a) {
+    sem_wait(&sema4);
 	int target = cnt + iter;
 	for (; cnt < target; cnt += 1)
 		;
-   return NULL;
+    if (sem_post(&sema4) != 0)
+        fatal("sem_post");
+    return NULL;
 }
 
 void usageStatement(const char *program) {
@@ -45,10 +48,10 @@ int main(int argc, char *argv[]) {
 	/* End of code section */
 
 	pthread_t thread1, thread2;
-	if (pthread_create(&thread1, NULL, Count, NULL)) // create thread 1
+	if (pthread_create(&thread1, NULL, count, NULL)) // create thread 1
 		fatal("\n ERROR creating thread 1");
 
-	if (pthread_create(&thread2, NULL, Count, NULL)) // create thread 2
+	if (pthread_create(&thread2, NULL, count, NULL)) // create thread 2
 		fatal("\n ERROR creating thread 2");
 
 	if(pthread_join(thread1, NULL)) // wait for thread 1 to finish
