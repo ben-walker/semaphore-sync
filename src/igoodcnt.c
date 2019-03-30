@@ -8,6 +8,7 @@
 #include <semaphore.h>
 
 int cnt = 0, iter;
+sem_t sema4;
 
 void *Count(void *a) {
 	int target = cnt + iter;
