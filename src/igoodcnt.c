@@ -10,12 +10,9 @@
 int cnt = 0, iter;
 
 void *Count(void *a) {
-   int tmp;
-   for (int i = 0; i < iter; i += 1) {
-      tmp = cnt; // copy the global cnt locally
-      tmp += 1; // increment the local copy
-      cnt = tmp; // store the local value into the global cnt
-   }
+	int target = cnt + iter;
+	for (; cnt < target; cnt += 1)
+		;
    return NULL;
 }
 
