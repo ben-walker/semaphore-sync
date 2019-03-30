@@ -1,0 +1,15 @@
+2*NITER is [2000000]
+
+Counter is [1086921]
+
+FAIL
+2*NITER is [2000000]
+
+Counter is [1319508]
+
+FAIL
+2*NITER is [2000000]
+
+Counter is [1111306]
+
+FAIL
