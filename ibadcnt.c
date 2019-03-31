@@ -1,11 +1,22 @@
+/**
+ * Ben Walker
+ * CIS*3110
+ * 
+ * Iterate a shared counter between two pthreads.
+ */
+
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-int NITER = 1000000;
-int cnt = 0;
+int NITER = 1000000; // number of times to iterate for each thread
+int cnt = 0; // the shared counter
 
+/**
+ * Function to be called from within a thread.
+ * Increments `cnt` `NITER` times.
+ */
 void *Count(void *a) {
    int tmp;
    for (int i = 0; i < NITER; i += 1) {
@@ -16,6 +27,11 @@ void *Count(void *a) {
    return NULL;
 }
 
+/**
+ * Creates pthreads, associates them with the Count function,
+ * and checks that the final `cnt` is consistent after both threads
+ * have completed.
+ */
 int main(int argc, char *argv[]) {
    pthread_t tid1, tid2;
 
