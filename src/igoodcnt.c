@@ -58,10 +58,20 @@ void cleanUp() {
  * have completed.
  */
 int main(int argc, char *argv[]) {
-   if (toInt(getIterationArg(argc, argv), &iter) == EXIT_FAILURE)
-      usageStatement(argv[0]); // failed to convert the "number of iterations" arg to an int
-   if (!isValid(iter))
-      usageStatement(argv[0]); // the number of iterations specified is invalid (i.e. < 0)
+   const char *programName = argv[0],
+      *iterations = getIterationArg(argc, argv);
+
+   // number of iterations argument validations
+   if (iterations == NULL) {
+      fprintf(stderr, "Error: Number of iterations argument not found.\n");
+      usageStatement(programName);
+   } else if (toInt(iterations, &iter) == EXIT_FAILURE) {
+      fprintf(stderr, "Error: Could not convert `%s` to integer.\n", iterations);
+      usageStatement(programName);
+   } else if (!isValid(iter)) {
+      fprintf(stderr, "Error: `%s` is not a valid number of iterations.\n", iterations);
+      usageStatement(programName);
+   }
 
    if (sem_init(&sema4, 0, 1) != 0) // get the semaphore ready, set its value to 1
       fatal("sem_init");
